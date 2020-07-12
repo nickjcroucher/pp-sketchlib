@@ -1,5 +1,11 @@
 
-CXXFLAGS+=-Wall -Wextra -std=c++14 -fopenmp -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS
+
+OpenMP_CXX_FLAGS="-Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include"
+OpenMP_CXX_LIB_NAMES="omp"
+OpenMP_omp_LIBRARY="/usr/local/opt/libomp/lib/libomp.dylib"
+
+
+CXXFLAGS+=-Wall -Wextra -std=c++14 -Xpreprocessor -fopenmp -lomp -D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=/usr/local/opt/libomp/lib/libomp.dylib
 ifdef DEBUG
   CXXFLAGS+= -O0 -g
 else ifdef PROFILE

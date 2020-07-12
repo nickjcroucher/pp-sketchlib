@@ -12,6 +12,7 @@
 #include <random>
 #include <memory>
 #include <algorithm>
+#include <omp.h>
 
 #include "random_match.hpp"
 #include "rng.hpp"

@@ -27,22 +27,12 @@ inline uint64_t doublehash(uint64_t hash1, uint64_t hash2) { return (hash1 + has
 // Seeds for small k-mers
 // Make sure they are symmetric so RC works
 const unsigned int small_k = 9;
-std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds;
+//std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds;
     // original
 //    {6, {{1,1,0,1,1,0,1,1}}},
 //    {7, {{1,1,1,0,1,0,1,1,1}}},
 //    {8, {{1,1,0,1,1,1,1,0,1,1}}},
 //    {9, {{1,0,1,1,1,1,1,1,1,0,1}}}
-    // phased - up to 101 for no particular reason
-std::vector<unsigned> codon_pattern{ 1, 0, 0 };
-for (int k = 6; k < 101; k++) {
-    std::vector<unsigned> seed_pattern;
-    for (int j = 1; j < k; j++) {
-        seed_pattern.insert(seed_pattern.end(),codon_pattern.begin(),codon_pattern.end());
-    }
-    seed_pattern.push_back(1);
-    kmer_seeds[k] = seed_pattern;
-}
     // phased
 //    {6, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}},
 //    {7, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}},
@@ -143,6 +133,20 @@ std::tuple<std::vector<uint64_t>, double, bool> sketch(SeqBuf &seq,
         }
     }
 
+    // Generate codon-phased seeds
+    const unsigned int small_k = 101;
+    std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds;
+    // phased - up to 101 for no particular reason
+    std::vector<unsigned> codon_pattern{ 1, 0, 0 };
+    for (int k = 6; k < 101; k++) {
+        std::vector<unsigned> seed_pattern;
+        for (int j = 1; j < k; j++) {
+            seed_pattern.insert(seed_pattern.end(),codon_pattern.begin(),codon_pattern.end());
+        }
+        seed_pattern.push_back(1);
+        kmer_seeds[k] = seed_pattern;
+    }
+    
     // Use spaced seeds for small k
     unsigned int seed_length = kmer_len; bool ss = false;
     if (kmer_len <= small_k) {

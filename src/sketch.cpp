@@ -34,9 +34,9 @@ std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds;
 //    {8, {{1,1,0,1,1,1,1,0,1,1}}},
 //    {9, {{1,0,1,1,1,1,1,1,1,0,1}}}
     // phased - up to 101 for no particular reason
-std::vector<std::vector<unsigned> > codon_pattern{ 1, 0, 0 };
+std::vector<unsigned> codon_pattern{ 1, 0, 0 };
 for (int k = 6; k < 101; k++) {
-    std::vector<std::vector<unsigned> > seed_pattern;
+    std::vector<unsigned> seed_pattern;
     for (int j = 1; j < k; j++) {
         seed_pattern.insert(seed_pattern.end(),codon_pattern.begin(),codon_pattern.end());
     }

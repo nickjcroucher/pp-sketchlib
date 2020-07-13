@@ -27,12 +27,33 @@ inline uint64_t doublehash(uint64_t hash1, uint64_t hash2) { return (hash1 + has
 // Seeds for small k-mers
 // Make sure they are symmetric so RC works
 const unsigned int small_k = 9;
-std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds({
-    {6, {{1,1,0,1,1,0,1,1}}},
-    {7, {{1,1,1,0,1,0,1,1,1}}},
-    {8, {{1,1,0,1,1,1,1,0,1,1}}},
-    {9, {{1,0,1,1,1,1,1,1,1,0,1}}}
-});
+std::unordered_map<int, std::vector<std::vector<unsigned> > > kmer_seeds;
+    // original
+//    {6, {{1,1,0,1,1,0,1,1}}},
+//    {7, {{1,1,1,0,1,0,1,1,1}}},
+//    {8, {{1,1,0,1,1,1,1,0,1,1}}},
+//    {9, {{1,0,1,1,1,1,1,1,1,0,1}}}
+    // phased - up to 101 for no particular reason
+std::vector<std::vector<unsigned> > codon_pattern{ 1, 0, 0 };
+for (int k = 6; k < 101; k++) {
+    std::vector<std::vector<unsigned> > seed_pattern;
+    for (int j = 1; j < k; j++) {
+        seed_pattern.insert(seed_pattern.end(),codon_pattern.begin(),codon_pattern.end());
+    }
+    seed_pattern.push_back(1);
+    kmer_seeds[k] = seed_pattern;
+}
+    // phased
+//    {6, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}},
+//    {7, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}},
+//    {8, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}},
+//    {9, {{1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1}}}
+    // unphased
+//    {6, {{1,1,1,0,0,0,1,1,1}}},
+//    {7, {{1,1,0,0,0,1,1,1,0,0,0,1,1}}},
+//    {8, {{1,1,1,1,0,0,0,1,1,1,1,1}}},
+//    {9, {{1,1,0,0,0,1,1,1,1,0,0,0,1,1}}}
+//});
 
 // Universal hashing function for densifybin
 uint64_t univhash(uint64_t s, uint64_t t) 

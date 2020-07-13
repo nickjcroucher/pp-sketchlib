@@ -144,7 +144,7 @@ std::tuple<std::vector<uint64_t>, double, bool> sketch(SeqBuf &seq,
             seed_pattern.insert(seed_pattern.end(),codon_pattern.begin(),codon_pattern.end());
         }
         seed_pattern.push_back(1);
-        kmer_seeds.insert(pair<int, std::vector<unsigned> >(k,seed_pattern))
+        kmer_seeds.insert(std::pair<int, std::vector<unsigned> >(k,seed_pattern))
     }
     
     // Use spaced seeds for small k
